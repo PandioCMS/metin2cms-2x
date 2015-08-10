@@ -1,0 +1,23 @@
+commit 68d8d8b3b8a6d83c9d264b8ceccfcf0b150a6986
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 10 11:37:56 2015 +0200
+
+    htaccess file added
+
+commit c00c03f7e041cacaba0ef819c0cc2eba44f30451
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 10 11:36:45 2015 +0200
+
+    Added a way of testing sessions
+
+commit 676ad341832866ee3e560025a847ff4cd56e8b56
+Author: Petru <petru.office92@gmail.com>
+Date:   Sun Aug 9 22:10:27 2015 +0200
+
+    Added Metin2CMS v2x branch files
+
+commit 7b08b88809863ac81b7cbf6ad27ca888d0eb5f31
+Author: Petru <petru.office92@gmail.com>
+Date:   Sun Aug 9 21:07:19 2015 +0200
+
+    Initial commit

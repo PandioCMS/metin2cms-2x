@@ -2,11 +2,14 @@
 
 require_once __DIR__.'/vendor/autoload.php';
 
+define('CMS_SAFELOCKER', __DIR__.'/safelocker');
+
 $app = new Silex\Application();
 
-require_once __DIR__.'/app/db.php';
+require_once __DIR__.'/app/config.php';
 require_once __DIR__.'/functions/metin2.php';
 require_once __DIR__.'/functions/internal.php';
+require_once __DIR__.'/classes/GitProvider.php';
 
 if (getenv('HTTP_HOST') == 'app.metin2cms-dev.zz.mu') {
   $app['debug'] = true;
@@ -14,6 +17,11 @@ if (getenv('HTTP_HOST') == 'app.metin2cms-dev.zz.mu') {
   error_reporting(E_ALL);
 } else {
   error_reporting(0);
+}
+
+$git = new Hacktor\Kernel\GitProvider($gitRepo['cms.git.versionFile'], $gitRepo['cms.git.changesFile'], $gitRepo['cms.git.repo']);
+if (defined('CMS_WIP') && CMS_WIP) {
+  $git->setVersion();
 }
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
