@@ -54,4 +54,4 @@ $app->register(new Silex\Provider\SessionServiceProvider(), [
   ],
 ]);
 
-$app->register(new Silex\Provider\FormServiceProvider());
+#$app->register(new Silex\Provider\FormServiceProvider());
