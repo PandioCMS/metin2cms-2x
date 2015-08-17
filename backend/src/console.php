@@ -64,8 +64,12 @@ $console
     $wrapper->setTimeout(3600);
     $git = $wrapper->workingCopy(CMS_ROOT);
     $git->config('push.default', 'matching');
-    $git->add('*')->commit($message)->push();
-    $output->writeln("<info>Repository update complete.</info>\nNew Commit: <comment>%s</comment>", $wrapper->git('rev-parse HEAD'));
+    if ($git->hasChanges()) {
+      $git->add('*')->commit($message)->push();
+      $output->writeln("<info>Repository update complete.</info>\nNew Commit: <comment>%s</comment>", $wrapper->git('rev-parse HEAD'));
+    } else {
+      $output->writeln('No changes to commit.');
+    }
 
     if ($cmsinfo['repository'] == 'nightly') {
       $version = $wrapper->git('rev-parse --short HEAD');
