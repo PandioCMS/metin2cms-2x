@@ -37,6 +37,7 @@ $console
     $wrapper = new GitWrapper();
     $wrapper->setTimeout(3600);
     $git = $wrapper->workingCopy(CMS_ROOT);
+    $git->config('push.default', 'matching');
     $git->add('*')->commit($message)->push();
 
     $output->writeIn($wrapper->streamOutput());
