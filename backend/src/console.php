@@ -36,13 +36,15 @@ $console
   ))
   ->setDescription('Send changes to GitHub repository')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-    $message = ($input->getOption('message')) ? $input->getOption('message') : 'Repository update from Metin2CMS CLI.';
     try {
+      $message = ($input->getOption('message')) ? $input->getOption('message') : 'Repository update from Metin2CMS CLI.';
+
       $wrapper = new GitWrapper();
       $wrapper->setTimeout(3600);
       $git = $wrapper->workingCopy(CMS_ROOT);
       $git->config('push.default', 'matching');
       $git->add('*')->commit($message)->push();
+
       $output->writeIn($wrapper->streamOutput());
 
       $repoType = file_get_contents(CMS_SAFELOCKER.'/release');
