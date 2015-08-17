@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+(php_sapi_name() == 'cli') ?: exit('You\'re not allowed to access this file.');
+
+require_once __DIR__.'/../backend/vendor/autoload.php';
+
+set_time_limit(0);
+
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+
+$app = require __DIR__.'/../backend/src/app.php';
+$cfgFile = sprintf('%s/../backend/config/%s.php', __DIR__, $env);
+require $cfgFile;
+#require __DIR__.'/../backend/config/'.$env.'.php';
+$console = require __DIR__.'/../backend/src/console.php';
+$console->run();
