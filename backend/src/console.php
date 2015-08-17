@@ -41,6 +41,8 @@ $console
     $git = $wrapper->workingCopy(CMS_ROOT);
     $git->config('push.default', 'matching');
     $git->add('*')->commit($message)->push();
+    #$output->writeIn($wrapper->streamOutput());
+
     $repoType = file_get_contents(CMS_SAFELOCKER.'/release');
 
     if ($repoType == 'nightly') {
@@ -60,6 +62,5 @@ $console
       file_put_contents($logFile, sprintf('%s::%s', $repoType, $version));
     }
 
-    $output->writeIn($wrapper->streamOutput());
   });
 return $console;
