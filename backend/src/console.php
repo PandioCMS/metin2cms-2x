@@ -43,6 +43,8 @@ $console
       $git = $wrapper->workingCopy(CMS_ROOT);
       $git->config('push.default', 'matching');
       $git->add('*')->commit($message)->push();
+      $output->writeIn($wrapper->streamOutput());
+
       $repoType = file_get_contents(CMS_SAFELOCKER.'/release');
 
       if ($repoType == 'nightly') {
@@ -66,7 +68,6 @@ $console
         $output->writeIn(sprintf('<error>Caught IOExceptionInterface: %s</error>', $e->getMessage()));
       }
 
-      $output->writeIn($wrapper->streamOutput());
     } catch (GitException $e) {
       $output->writeIn(sprintf('<error>Caught GitException: %s</error>', $e->getMessage()));
     }
