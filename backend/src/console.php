@@ -5,7 +5,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use GitWrapper\GitWrapper;
+use GitWrapper\GitException;
 
 $cmsinfo = [
   'repository' => rtrim(file_get_contents(__DIR__.'/../safelocker/release')),
@@ -34,12 +37,38 @@ $console
   ->setDescription('Send changes to GitHub repository')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     $message = ($input->getOption('message')) ? $input->getOption('message') : 'Repository update from Metin2CMS CLI.';
-    $wrapper = new GitWrapper();
-    $wrapper->setTimeout(3600);
-    $git = $wrapper->workingCopy(CMS_ROOT);
-    $git->config('push.default', 'matching');
-    $git->add('*')->commit($message)->push();
+    try {
+      $wrapper = new GitWrapper();
+      $wrapper->setTimeout(3600);
+      $git = $wrapper->workingCopy(CMS_ROOT);
+      $git->config('push.default', 'matching');
+      $git->add('*')->commit($message)->push();
+      $repoType = file_get_contents(CMS_SAFELOCKER.'/release');
 
-    $output->writeIn($wrapper->streamOutput());
+      if ($repoType == 'nightly') {
+        $version = $wrapper->git('rev-parse --short HEAD');
+      } else if($repoType == 'stable') {
+        $version = $wrapper->git('describe --exact-match --abbrev=0');
+      } else {
+        $version = 'unknown';
+      }
+
+      try {
+        $fs = new Filesystem();
+        $logFile = CMS_SAFELOCKER.'/hacktor/release.log';
+        if ($fs->exists($logFile)) {
+          file_put_contents($logFile, sprintf('%s::%s', $repoType, $version));
+        } else {
+          $fs->touch($logFile);
+          file_put_contents($logFile, sprintf('%s::%s', $repoType, $version));
+        }
+      } catch (IOExceptionInterface $e) {
+        $output->writeIn(sprintf('<error>Caught IOExceptionInterface: %s</error>', $e->getMessage()));
+      }
+
+      $output->writeIn($wrapper->streamOutput());
+    } catch (GitException $e) {
+      $output->writeIn(sprintf('<error>Caught GitException: %s</error>', $e->getMessage()));
+    }
   });
 return $console;

@@ -8,6 +8,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 
 define('CMS_ROOT', __DIR__.'/../../');
+define('CMS_SAFELOCKER', __DIR__.'/../safelocker');
 
 $app = new Application();
 $app->register(new RoutingServiceProvider());
