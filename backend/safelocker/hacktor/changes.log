@@ -1,3 +1,76 @@
+commit 10f33c685a1cea1f13ea8982444bdaec28622c56
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 15:36:35 2015 +0200
+
+    Repository update from Metin2CMS CLI.
+
+commit b1e01b336548383a939f9f264a3591d42065b061
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 15:03:51 2015 +0200
+
+    Added version logging after commit
+
+commit 8bd749367ca1bdde7df75e9960036fe5fc3de72f
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 15:03:04 2015 +0200
+
+    Added version logging after commit
+
+commit 959b316e1fd456205a6e9f087e68bd82d572bb73
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 15:01:06 2015 +0200
+
+    Added exception handling in console.php
+
+commit 3ebf159856fcdcc5a85ccc9e72453fab207f74f1
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:59:29 2015 +0200
+
+    Added exception handling in console.php
+
+commit 1fe62026a88b69d9780b2798162cc022125e986e
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:58:07 2015 +0200
+
+    Added exception handling in console.php
+
+commit bace0ecdfd18072198282af8eef079d66fc0adfe
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:57:11 2015 +0200
+
+    Added exception handling in console.php
+
+commit 3b7d53ad5aea6a39f77764e8afd394b20cf8260d
+Merge: 9d9e407 257cb32
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:41:08 2015 +0200
+
+    Merge branch 'master' of https://github.com/PandioCMS/metin2cms-2x
+
+commit 9d9e40708e69dbfcc3428d95d9878e3375b531b8
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:39:56 2015 +0200
+
+    =Major update
+
+commit 76739d3a16aa576b1ab1d2c9067d89262f55ffb7
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 17 14:32:16 2015 +0200
+
+    =Major update
+
+commit 257cb321d3311bcb0b7f9792e75d94d76f35800f
+Author: Petru <petru.office92@gmail.com>
+Date:   Tue Aug 11 16:12:19 2015 +0200
+
+    Changed license (GPL v2 -> Apache License v2)
+
+commit c8dbe1ea615cecf75c3d0669312cbd9cae482b7f
+Author: Petru <petru.office92@gmail.com>
+Date:   Mon Aug 10 13:04:00 2015 +0200
+
+    Tested Session and implemented primitive Git versioning
+
 commit 68d8d8b3b8a6d83c9d264b8ceccfcf0b150a6986
 Author: Petru <petru.office92@gmail.com>
 Date:   Mon Aug 10 11:37:56 2015 +0200
