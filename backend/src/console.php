@@ -66,7 +66,7 @@ $console
     $git->config('push.default', 'matching');
     if ($git->hasChanges()) {
       $git->add('*')->commit($message)->push();
-      $output->writeln("<info>Repository update complete.</info>\nNew Commit: <comment>%s</comment>", $wrapper->git('rev-parse HEAD'));
+      $output->writeln(sprintf("<info>Repository update complete.</info>\nNew Commit: <comment>%s</comment>", $wrapper->git('rev-parse HEAD')));
     } else {
       $output->writeln('No changes to commit.');
     }
