@@ -7,8 +7,26 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 
-define('CMS_ROOT', __DIR__.'/../../');
-define('CMS_SAFELOCKER', __DIR__.'/../safelocker');
+define('__cms_root__', __DIR__.'/../../');
+
+$lcpdeflist = [
+  'htdocs' => __cms_root__.'public_html',
+  'config' => __cms_root__.'backend/config',
+  'safelocker' => __cms_root__.'backend/safelocker',
+  'source' => __cms_root__.'backend/src',
+  'templates' => __cms_root__.'backend/templates',
+  'library' => __cms_root__.'backend/vendor'
+];
+
+foreach ($lcpdeflist as $name => $path) {
+  if (!file_exists($path)) {
+    exit;
+  }
+
+  define (sprintf('__cms_%s__', $name), $path);
+}
+
+require_once __cms_library__.'/autoload.php';
 
 $app = new Application();
 $app->register(new RoutingServiceProvider());

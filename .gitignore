@@ -1,0 +1,7 @@
+backend/vendor
+backend/safelocker/cache/*
+backend/logs/*
+backend/profiler/*
+backend/sessions/*
+backend/twig/*
+backend/composer.lock

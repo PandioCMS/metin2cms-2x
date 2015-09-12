@@ -7,9 +7,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Process\Process;
 use GitWrapper\GitWrapper;
 
-$console = new Application('Metin2CMS', rtrim(file_get_contents(CMS_SAFELOCKER.'/hacktor/release.log')));
+$console = new Application('Metin2CMS', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
 $console->setDispatcher($app['dispatcher']);
 
@@ -22,11 +23,11 @@ $console
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     $source = $input->getOption('source');
     if ($source == 'git') {
-      $repository = rtrim(file_get_contents(CMS_SAFELOCKER.'/release'));
+      $repository = rtrim(file_get_contents(__cms_safelocker__.'/release'));
 
       $wrapper = new GitWrapper();
       $wrapper->setTimeout(3600);
-      $git = $wrapper->workingCopy(CMS_ROOT);
+      $git = $wrapper->workingCopy(__cms_root__);
 
       if ($repository == 'nightly') {
         $version = ltrim($wrapper->git('rev-parse --short HEAD'));
@@ -36,16 +37,17 @@ $console
         $version = 'unknown';
       }
     } else if ($source == 'cache') {
-      $data = explode('::', rtrim(file_get_contents(CMS_SAFELOCKER.'/hacktor/release.log')));
+      $data = explode('::', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
       $version = $data[1];
     } else {
-      $data = explode('::', rtrim(file_get_contents(CMS_SAFELOCKER.'/hacktor/release.log')));
+      $data = explode('::', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
       $version = $data[1];
       $source = 'cache';
     }
 
     $output->writeln(sprintf('Metin2CMS <info>(%s)</info> version <comment>%s</comment>', ucfirst($source), $version));
   });
+
 $console
   ->register('repo:push')
   ->setDefinition(array(
@@ -54,15 +56,15 @@ $console
   ->setDescription('Send changes to Git repository.')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     $cmsinfo = [
-      'repository' => rtrim(file_get_contents(CMS_SAFELOCKER.'/release')),
-      'version' => CMS_SAFELOCKER.'/hacktor/release.log',
-      'history' => CMS_SAFELOCKER.'/hacktor/changes.log',
+      'repository' => rtrim(file_get_contents(__cms_safelocker__.'/release')),
+      'version' => __cms_safelocker__.'/hacktor/release.log',
+      'history' => __cms_safelocker__.'/hacktor/changes.log',
     ];
 
     $message = ($input->getOption('message')) ? $input->getOption('message') : 'Repository update from Metin2CMS CLI.';
     $wrapper = new GitWrapper();
     $wrapper->setTimeout(3600);
-    $git = $wrapper->workingCopy(CMS_ROOT);
+    $git = $wrapper->workingCopy(__cms_root__);
     $git->config('push.default', 'matching');
     if ($git->hasChanges()) {
       $git->add('*')->commit($message)->push();
@@ -95,15 +97,51 @@ $console
       file_put_contents($cmsinfo['history'], $wrapper->git('log'));
     }
   });
+
 $console
   ->register('repo:pull')
   ->setDescription('Fetch changes from remote Git repository.')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     $wrapper = new GitWrapper();
     $wrapper->setTimeout(3600);
-    $git = $wrapper->workingCopy(CMS_ROOT);
+    $git = $wrapper->workingCopy(__cms_root__);
 
     $git->fetchAll();
     $output->writeln('<info>Fetched all repositories from remote.</info>');
   });
+
+$console
+  ->register('server:run')
+  ->setDescription('Runs built-in PHP Server in dev-mode (loads index_dev.php)')
+  ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    $port = '9269';
+    $process = sprintf('php -S localhost:%s -t %s %s/index_dev.php', $port, __cms_htdocs__, __cms_htdocs__);
+
+    $proc = new Process($process);
+    $proc->run();
+
+    if (!$proc->isSuccessful()) {
+      throw new \RuntimeException($proc->getErrorOutput());
+    }
+
+    $output->writeln('PHP Server started at <info>localhost:9269</info>');
+  });
+
+$console
+  ->register('server:run-test')
+  ->setDescription('Runs built-in PHP Server in test mode (loads index.php)')
+  ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    $port = '8080';
+    $process = sprintf('php -S localhost:%s -t %s %s/index.php', $port, __cms_htdocs__, __cms_htdocs__);
+
+    $proc = new Process($process);
+    $proc->run();
+
+    if (!$proc->isSuccessful()) {
+      throw new \RuntimeException($proc->getErrorOutput());
+    }
+
+    $output->writeln('PHP Server started at <info>localhost:8080</info>');
+  });
+
 return $console;
