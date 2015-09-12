@@ -104,6 +104,33 @@ $console
   });
 
 $console
+  ->register('repo:sync')
+  ->setDescription('If Git commit executed from CLI, it\'s recommended to sync version and history in files.')
+  ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    $cmsinfo = [
+      'repository' => rtrim(file_get_contents(__cms_safelocker__.'/release')),
+      'version' => __cms_safelocker__.'/hacktor/release.log',
+      'history' => __cms_safelocker__.'/hacktor/changes.log',
+    ];
+
+    $fs = new Filesystem();
+
+    if ($fs->exists($cmsinfo['version'])) {
+      file_put_contents($cmsinfo['version'], sprintf('%s::%s', $cmsinfo['repository'], $version));
+    } else {
+      $fs->touch($cmsinfo['version']);
+      file_put_contents($cmsinfo['version'], sprintf('%s::%s', $cmsinfo['repository'], $version));
+    }
+
+    if ($fs->exists($cmsinfo['history'])) {
+      file_put_contents($cmsinfo['history'], $wrapper->git('log'));
+    } else {
+      $fs->touch($cmsinfo['history']);
+      file_put_contents($cmsinfo['history'], $wrapper->git('log'));
+    }
+  });
+
+$console
   ->register('repo:pull')
   ->setDescription('Fetch changes from remote Git repository.')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
