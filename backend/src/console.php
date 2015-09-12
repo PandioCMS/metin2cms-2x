@@ -55,6 +55,11 @@ $console
   ))
   ->setDescription('Send changes to Git repository.')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    if (preg_match('/(win)/i', PHP_OS)) {
+      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
+      exit(1);
+    }
+
     $cmsinfo = [
       'repository' => rtrim(file_get_contents(__cms_safelocker__.'/release')),
       'version' => __cms_safelocker__.'/hacktor/release.log',
@@ -114,6 +119,11 @@ $console
   ->register('server:run')
   ->setDescription('Runs built-in PHP Server in dev-mode (loads index_dev.php)')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    if (preg_match('/(win)/i', PHP_OS)) {
+      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
+      exit(1);
+    }
+
     $port = '9269';
     $process = sprintf('php -S localhost:%s -t %s %s/index_dev.php', $port, __cms_htdocs__, __cms_htdocs__);
 
@@ -131,6 +141,11 @@ $console
   ->register('server:run-test')
   ->setDescription('Runs built-in PHP Server in test mode (loads index.php)')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    if (preg_match('/(win)/i', PHP_OS)) {
+      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
+      exit(1);
+    }
+
     $port = '8080';
     $process = sprintf('php -S localhost:%s -t %s %s/index.php', $port, __cms_htdocs__, __cms_htdocs__);
 
