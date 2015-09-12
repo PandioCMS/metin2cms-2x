@@ -1,3 +1,15 @@
+commit 95011af65006805dd4aaa963c51df2bb30d6f058
+Author: Petru <petru.office92@gmail.com>
+Date:   Sun Sep 13 00:45:16 2015 +0300
+
+    Added repo:sync if changes commited from CLI
+
+commit c593f4fd06d387046a879e08eabcea03da9bc84d
+Author: Petru <petru.office92@gmail.com>
+Date:   Sun Sep 13 00:41:47 2015 +0300
+
+    Added Windows OS restriction to CLI
+
 commit 288f6d629d92970a8aaca0a9a7dbe2c32cd706dd
 Author: Petru <petru.office92@gmail.com>
 Date:   Sun Sep 13 00:34:05 2015 +0300

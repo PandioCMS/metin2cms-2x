@@ -114,6 +114,16 @@ $console
     ];
 
     $fs = new Filesystem();
+    $wrapper = new GitWrapper();
+    $wrapper->setTimeout(3600);
+
+    if ($cmsinfo['repository'] == 'nightly') {
+      $version = $wrapper->git('rev-parse --short HEAD');
+    } else if($cmsinfo['repository'] == 'stable') {
+      $version = $wrapper->git('describe --exact-match --abbrev=0');
+    } else {
+      $version = 'unknown';
+    }
 
     if ($fs->exists($cmsinfo['version'])) {
       file_put_contents($cmsinfo['version'], sprintf('%s::%s', $cmsinfo['repository'], $version));
