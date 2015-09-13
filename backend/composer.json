@@ -21,7 +21,8 @@
         "symfony/translation": "~2.6",
         "symfony/twig-bridge": "~2.6",
         "symfony/validator": "~2.6",
-        "cpliakas/git-wrapper": "~1.5"
+        "cpliakas/git-wrapper": "~1.5",
+        "saxulum/config-service-provider": "dev-master"
     },
     "autoload": {
         "psr-0": { "": "src/" }

@@ -10,9 +10,9 @@ require __DIR__.'/prod.php';
 $app['debug'] = true;
 
 $app->register(new MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/../safelocker/logs/silex_dev.log',
+    'monolog.logfile' => __cms_safelocker__.'/logs/silex_dev.log',
 ));
 
 $app->register(new WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => __DIR__.'/../safelocker/profiler',
+    'profiler.cache_dir' => __cms_safelocker__.'/profiler',
 ));

@@ -33,4 +33,5 @@ return array(
     'Symfony\\Bridge\\Monolog\\' => array($vendorDir . '/symfony/monolog-bridge'),
     'Silex\\' => array($vendorDir . '/silex/silex/src/Silex'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'Igorw\\Silex\\' => array($vendorDir . '/saxulum/config-service-provider/src/Igorw/Silex'),
 );

@@ -1,3 +1,9 @@
+commit 02c79982ecfe10dcb466ec0e877a510eecf93506
+Author: Petru <petru.office92@gmail.com>
+Date:   Sun Sep 13 00:47:26 2015 +0300
+
+    Fixed bug at repo:sync command
+
 commit 95011af65006805dd4aaa963c51df2bb30d6f058
 Author: Petru <petru.office92@gmail.com>
 Date:   Sun Sep 13 00:45:16 2015 +0300
