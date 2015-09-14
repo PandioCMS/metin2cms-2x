@@ -9,9 +9,57 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function () use ($app) {
-  return $app['twig']->render('pages/index.twig');
+  return $app['twig']->render('pages/index.twig', ['config' => $app['config']]);
 })
 ->bind('homepage');
+
+$app->get('/usercp', function () use ($app) {
+  return $app['twig']->render('pages/usercp/index.twig');
+})->bind('usercp');
+
+$app->get('/usercp/register', function () use ($app) {
+  return $app['twig']->render('pages/usercp/register.twig');
+})->bind('usercp_register');
+
+$app->get('/usercp/login', function () use ($app) {
+  return $app['twig']->render('pages/usercp/login.twig');
+})->bind('usercp_login');
+
+$app->get('/guildcp', function () use ($app) {
+  return $app['twig']->render('pages/guildcp/index.twig');
+})->bind('guildcp');
+
+$app->get('/modcp', function () use ($app) {
+  return $app['twig']->render('pages/modcp/index.twig');
+})->bind('modcp');
+
+$app->get('/admincp', function () use ($app) {
+  return $app['twig']->render('pages/admincp/index.twig');
+})->bind('admincp');
+
+$app->get('/download', function () use ($app) {
+  return $app['twig']->render('pages/download/index.twig');
+})->bind('download');
+
+$app->get('/chat', function () use ($app) {
+  return $app['twig']->render('pages/chat/index.twig');
+})->bind('chat');
+
+$app->get('/forum', function () use ($app) {
+  return $app['twig']->render('pages/forum/index.twig');
+})->bind('forum');
+
+$app->get('/presentation', function () use ($app) {
+  return $app['twig']->render('pages/presentation.twig');
+})->bind('presentation');
+
+$app->get('/shop', function () use ($app) {
+  return $app['twig']->render('pages/shop/index.twig');
+})->bind('shop');
+
+$app->get('/donate', function () use ($app) {
+  return $app['twig']->render('pages/shop/donate.twig');
+})->bind('donate');
 
 $app->get('/profile', function () use ($app) {
   return $app->redirect('/');

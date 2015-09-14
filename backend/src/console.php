@@ -9,10 +9,42 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Process\Process;
 use GitWrapper\GitWrapper;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\Console\ConsoleEvents;
 
 $console = new Application('Metin2CMS', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
 $console->setDispatcher($app['dispatcher']);
+
+$console
+  ->register('tools:generate-routes')
+  ->setDescription('Generates routes based on a file.')
+  ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+    $file = file(__cms_safelocker__.'/resources/routes.list');
+
+    // '/route', '/route/subroute'
+    $c = 0;
+    foreach ($file as $lines) {
+      $c++;
+      $template = "\$app->get('%s', function () use (\$app) {})->bind('%s');\n";
+      $route = $lines[$c];
+      $bind = preg_match('/', '_', $route);
+
+      $compile[$c] = sprintf($template, $route, $bind);
+    }
+
+    $lines = explode("\n", $compile);
+    $output_file = __cms_safelocker__.'/hacktor/routes';
+    $fp = fopen($output_file, 'a+');
+
+    foreach ($lines as $line) {
+      fwrite($fp, $line."\n");
+    }
+
+    fclose($fp);
+
+    $output->writeln(sprintf('The file was written at "%s".', $output_file));
+  });
 
 $console
   ->register('repo:version')
@@ -56,8 +88,10 @@ $console
   ->setDescription('Send changes to Git repository.')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     if (preg_match('/(win)/i', PHP_OS)) {
-      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
-      exit(1);
+      $exception = new \InvalidArgumentException('Command disabled under Windows OS due to unexpected behavior.', $event->getExitCode(), $event->getException());
+
+      $event->setExitCode(2);
+      $event->setException($exception);
     }
 
     $cmsinfo = [
@@ -157,8 +191,10 @@ $console
   ->setDescription('Runs built-in PHP Server in dev-mode (loads index_dev.php)')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     if (preg_match('/(win)/i', PHP_OS)) {
-      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
-      exit(1);
+      $exception = new \InvalidArgumentException('Command disabled under Windows OS due to unexpected behavior.', $event->getExitCode(), $event->getException());
+
+      $event->setExitCode(2);
+      $event->setException($exception);
     }
 
     $port = '9269';
@@ -179,8 +215,10 @@ $console
   ->setDescription('Runs built-in PHP Server in test mode (loads index.php)')
   ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
     if (preg_match('/(win)/i', PHP_OS)) {
-      $output->writeln('<error>WARNING!</error> You\'re trying to execute this command under Windows OS. It is not recommended, unexpected things will happen.');
-      exit(1);
+      $exception = new \InvalidArgumentException('Command disabled under Windows OS due to unexpected behavior.', $event->getExitCode(), $event->getException());
+
+      $event->setExitCode(2);
+      $event->setException($exception);
     }
 
     $port = '8080';

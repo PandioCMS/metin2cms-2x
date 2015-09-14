@@ -12,6 +12,8 @@ return [
       'name' => 'Metin2CMS',
       'm2pserverName' => 'Metin2CMS',
       'template' => 'classic',
+      'fullUrl' => 'http://v2.cms.dev/',
+      'ytCode' => '8nW-IPrzM1g',
     ],
 
     'io' => [

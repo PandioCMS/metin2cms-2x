@@ -8,6 +8,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Igorw\Silex\ConfigServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Application\UrlGeneratorTrait;
 
 define('__cms_root__', dirname(dirname(__DIR__)).'/');
 
@@ -36,21 +37,24 @@ $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
-$app->register(new FormServiceProvider());
+#$app->register(new FormServiceProvider());
 $app->register(new ConfigServiceProvider(__cms_config__.'/cms.php'));
 
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
   // add custom globals, filters, tags, ...
 
   $twig->addFunction(new \Twig_SimpleFunction('asset', function ($asset) use ($app) {
-    return $app['request_stack']->getMasterRequest()->getBasepath().'/'.ltrim($asset, '/');
+    #return $app['request_stack']->getMasterRequest()->getBasepath().'/'.ltrim($asset, '/');
+    return sprintf('%s/assets/%s', $app['config']['site']['fullUrl'], $asset);
+  }));
+
+  $twig->addFunction(new \Twig_SimpleFunction('poweredBy', function () use ($app) {
+    $data = explode('::', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
+    return sprintf('Powered by Metin2CMS versiunea %s (%s)', $data[1], $data[0]);
+    unset($data);
   }));
 
   return $twig;
 });
-
-$data = explode('::', rtrim(file_get_contents(__cms_safelocker__.'/hacktor/release.log')));
-$app['poweredBy'] = sprintf('Powered by Metin2CMS v%s (%s)', $data[1], $data[0]);
-unset($data);
 
 return $app;

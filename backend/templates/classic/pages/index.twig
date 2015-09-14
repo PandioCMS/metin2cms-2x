@@ -1,9 +1,37 @@
 {% extends "layout.twig" %}
 
 {% block title %}
-  Metin2CMS v2
+Homepage
 {% endblock %}
 
 {% block content %}
-    Bine ai venit la Metin2CMS v2!
+<div class="list-group">
+  <a role="button" href="{{ url('download') }}" class="list-group-item-active">
+    <h4 class="list-group-item-heading">Descarcă acum!</h4>
+  </a>
+
+  <a role="button" href="{{ url('usercp_register') }}" class="btn btn-lg btn-success">
+    Înregistrare
+  </a>
+</div>
+
+<div class="alert alert-danger" role="alert">
+  <p>Momentan nu există nicio postare pe site.</p>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Metin2CMS v2</h3>
+  </div>
+
+  <span class="label label-success">
+      <i class="fa fa-clock-o"></i> 14 Septembrie 2015
+  </span>
+
+  <div class="panel-body">
+    <p>
+      Aceasta este o sesiune demonstrativă a Metin2CMS v2.
+    </p>
+  </div>
+</div>
 {% endblock %}
